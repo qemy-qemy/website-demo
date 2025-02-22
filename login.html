@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Owner Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+
+    <div class="wrapper">
+        <div class="image-container">
+            <img src="OPI.png" alt="Business Logo" class="a">
+        </div>
+
+        <div class="container">
+            <h2><i class="fas fa-user-shield"></i> Worker Access</h2>
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUsername" style="color: rgb(0, 0, 0);"><i class="fas fa-user-tie"></i> Username</label>
+                    <input type="text" id="loginUsername" placeholder="Enter admin username" style="background-color: #2c0493; color: rgb(255, 235, 235);"  required>
+                </div>
+                <div class="form-group" >
+                    <label for="loginPassword" style="color: rgb(0, 0, 0); color: rgb(0, 0, 0)"><i class="fas fa-fingerprint"></i> Password</label>
+                    <input type="password"  id="loginPassword" placeholder="Enter secure passphrase " style="background-color: #1c0494; color: rgb(255, 235, 235)"  required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePasswordVisibility()" style=" margin-top: 1rem;"></i>
+                </div>
+                <button type="submit" >Authenticate <i class="fas fa-arrow-right-to-bracket"></i></button>
+                <div class="loading-spinner" id="loadingSpinner">
+                                
+                </div>
+            </form>
+            <div id="message"></div>
+        </div>
+    </div>
+
+    <script>
+        const ownerCredentials = {
+            username: "rugero",
+            password: "remy",
+        };
+
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('loginPassword');
+            const icon = document.querySelector('.password-toggle');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const message = document.getElementById('message');
+
+            if (username === ownerCredentials.username && password === ownerCredentials.password) {
+                localStorage.setItem("loggedIn", "true");
+                message.textContent = "Authentication successful! Redirecting...";
+                message.className = 'success';
+                setTimeout(() => {
+                    window.location.href = "home.html";
+                }, 1500);
+            } else {
+                message.textContent = "⚠️ Access Denied: Invalid credentials";
+                message.className = 'error';
+                document.getElementById('loginPassword').value = '';
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                }, 3000);
+            }
+        }
+      
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const message = document.getElementById('message');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            if (username === ownerCredentials.username && password === ownerCredentials.password) {
+                localStorage.setItem("loggedIn", "true");
+                message.textContent = "Authentication successful! Redirecting...";
+                message.className = 'success';
+                loadingSpinner.style.display = 'block';
+
+                setTimeout(() => {
+                    window.location.href = "home.html";
+                }, 2000);
+            } else {
+                message.textContent = "⚠️ Access Denied: Invalid credentials";
+                message.className = 'error';
+                document.getElementById('loginPassword').value = '';
+                setTimeout(() => {
+                    message.textContent = "";
+                }, 30);
+            }
+        }
+    </script>
+</body>
+</html>
